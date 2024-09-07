@@ -1,12 +1,25 @@
 console.log("Hello from poke-items.js!")
-let itemText = ``;
 
 async function submitItem() {
+    itemEntry.innerHTML = "";
+    let itemText = ``;
     let itemValue = itemID.value;
     console.log(itemValue);
-    let itemFetch = await fetch(`https://pokeapi.co/api/v2/item/${itemValue}/`);
-    console.log(itemFetch);
-    let itemData = await itemFetch.json();
+    let itemFetch 
+    try {
+        itemFetch = await fetch(`https://pokeapi.co/api/v2/item/${itemValue}/`);
+        console.log(itemFetch);
+    } catch (error) {
+        alert("Error fetching data!");
+        return
+    }
+    let itemData;
+    if (itemFetch.ok === true) {
+        itemData = await itemFetch.json();
+    } else {
+        alert(`Error: ${itemFetch.status}`)
+        return
+    }
     let itemNames = itemData.names;
 
     let itemArray = itemData.name;
